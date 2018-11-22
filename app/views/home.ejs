@@ -1,0 +1,23 @@
+<div class="container main-card col-md-4">
+  <div class="card p-3 no-border">
+    <form method="POST" action="/post">
+      <textarea
+        name="content"
+        class="form-control text-area"
+        placeholder="Write something here..."
+      ></textarea>
+      <div class="vr"></div>
+      <div class="button-container">
+        <button class="btn btn-primary custom-button">Post</button>
+      </div>
+    </form>
+  </div>
+</div>
+<% data.forEach(post => { %>
+<div class="container main-card col-md-4">
+  <div class="card p-3 no-border">
+    <%= post.content %>
+    <span class="right"><%= post.date %> at <%= post.time %></span>
+  </div>
+</div>
+<% }) %>
