@@ -1,5 +1,9 @@
 let Post = new schema({
-  user_id: { type: String, required: true },
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: "users",
+    required: true
+  },
   content: { type: String, required: true }
 });
 

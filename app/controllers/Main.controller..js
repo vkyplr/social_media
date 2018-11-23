@@ -49,19 +49,24 @@ exports.login = (req, res) => {
 };
 
 exports.home = (req, res) => {
-  Post.find({}, (error, posts) => {
-    data = [];
+  Post.aggregate([
+    {
+      $sort: { _id: -1 }
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "user",
+        foreignField: "_id",
+        as: "user"
+      }
+    }
+  ]).exec((err, posts) => {
+    let data = [];
     posts.map(post => {
-      let user = helper.getUserData(post.user_id);
-      console.log(user);
-      return;
-      data.push({
-        user_id: post.user_id,
-        post_id: post._id,
-        content: post.content,
-        date: helper.getCreatedDate(post._id),
-        time: helper.getCreatedTime(post._id)
-      });
+      post.date = helper.getCreatedDate(post._id);
+      post.time = helper.getCreatedTime(post._id);
+      data.push(post);
     });
     res.render("index", { page: "home", data: data });
   });
@@ -105,7 +110,7 @@ exports.updatePassword = (req, res) => {
 
 exports.savePost = (req, res) => {
   let post = new Post({
-    user_id: req.session.user._id,
+    user: req.session.user._id,
     content: req.body.content
   });
   post.save(err => {

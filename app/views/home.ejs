@@ -14,10 +14,18 @@
   </div>
 </div>
 <% data.forEach(post => { %>
-<div class="container main-card col-md-4">
-  <div class="card p-3 no-border">
-    <%= post.content %>
-    <span class="right"><%= post.date %> at <%= post.time %></span>
+<div class="container post-card col-md-4">
+  <div class="card p-4 no-border">
+    <div style="display:inline-block">
+      <div class="right">
+        <small class="right"><%= post.date %></small><br /><small class="right"><%= post.time %></small>
+      </div>
+      <h5><%= post.user[0].first_name.charAt(0).toUpperCase() + post.user[0].first_name.substr(1) + ' ' + post.user[0].last_name.charAt(0).toUpperCase() + post.user[0].last_name.substr(1) %></h5>
+    </div>
+    <p class="content">
+      <%= post.content %>
+    </p>
   </div>
 </div>
 <% }) %>
+<div class="bottom-margin"></div>

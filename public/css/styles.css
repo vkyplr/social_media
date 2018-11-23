@@ -43,9 +43,19 @@ body {
   border: none;
 }
 
+.content {
+  font-weight: 300;
+  margin-top: 15px;
+}
+
 .main-card {
   margin-top: 80px;
-  margin-bottom: 80px;
+  /* margin-bottom: 40px; */
+}
+
+.post-card {
+  margin-top: 15px;
+  margin-bottom: 10px;
 }
 
 .button {
@@ -85,4 +95,16 @@ body {
 
 .right {
   float: right;
+}
+
+.card {
+  border-radius: 0.5rem !important;
+}
+
+.bottom-margin {
+  margin-top: 100px;
+}
+
+.no-right {
+  right: 0;
 }

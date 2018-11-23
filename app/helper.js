@@ -22,16 +22,42 @@ exports.checkSession = (req, res, next) => {
 
 // Extract Creation Date from id
 exports.getCreatedDate = id => {
-  var obId = mongoose.Types.ObjectId(id);
-  return obId.getTimestamp().toDateString();
+  let obId = mongoose.Types.ObjectId(id);
+  let mlist = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "June",
+    "Jul",
+    "Aug",
+    "Sept",
+    "Oct",
+    "Nov",
+    "Dec"
+  ];
+  let obDate = new Date(obId.getTimestamp().toDateString());
+  return (
+    mlist[obDate.getMonth()] +
+    " " +
+    obDate.getDate() +
+    ", " +
+    obDate.getFullYear()
+  );
 };
 
 // Extract Creation Time from id
 exports.getCreatedTime = id => {
   var obId = mongoose.Types.ObjectId(id);
-  return obId.getTimestamp().toLocaleTimeString();
+  return obId
+    .getTimestamp()
+    .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 };
 
 exports.getUserData = id => {
-  return User.findOne({ _id: id });
+  User.findOne({ _id: id }, (err, result) => {
+    global.user = result;
+  });
+  console.log(global.user);
 };
