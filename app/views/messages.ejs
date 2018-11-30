@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="messages-container col-md-6 cont">
+    <div class="card no-border p-2">
+      <h3 class="center-text">Messages</h3>
+      <div class="vr"></div>
+      <div class="message"></div>
+      <div class="message-form">
+        <form action="">
+          <div class="row">
+            <div class="col-md-10 col-sm-10 col-8">
+              <input
+                type="text"
+                id="msg"
+                class="form-control message-input"
+                placeholder="type your message"
+              />
+            </div>
+            <div class="col-md-2 col-sm-2 col-4">
+              <button class="btn btn-primary message-send">send</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="bottom-margin"></div>
+<script>
+  var socket = io.connect("http://localhost:4000");
+  $("form").submit(function() {
+    socket.emit("message", $("#msg").val());
+    $("#msg").val("");
+    return false;
+  });
+  socket.on("message", function(msg) {
+    $(".message").append("<p  class='message-text'>" + msg + "</p>");
+  });
+</script>

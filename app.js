@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const session = require("express-session");
 const flash = require("express-flash-messages");
+const app = express();
 bcrypt = require("bcrypt");
 
 // DATABASE INITIALIZATIONS
@@ -15,8 +16,6 @@ mongoose.connect(
 mongoose.Promise = global.Promise;
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
-
-const app = express();
 
 // Routes
 const mainRoutes = require("./routes/main");
@@ -57,4 +56,11 @@ app.use((req, res) => {
   res.render("index", { page: "error" });
 });
 
-app.listen(4000, () => console.log("listning on PORT 4000"));
+server = app.listen(4000, () => console.log("listning on PORT 4000"));
+var io = require("socket.io")(server);
+
+io.on("connection", function(socket) {
+  socket.on("message", function(msg) {
+    io.emit("message", msg);
+  });
+});

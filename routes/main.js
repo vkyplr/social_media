@@ -25,6 +25,10 @@ router.get("/change-password", helper.checkSession, (req, res) =>
   res.render("index", { page: "change_password" })
 );
 
+router.get("/messages", helper.checkSession, (req, res) => {
+  res.render("index", { page: "messages" });
+});
+
 router.get("/logout", MainController.logout);
 
 // POST Routes

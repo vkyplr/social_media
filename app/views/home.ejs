@@ -1,30 +1,38 @@
-<div class="container main-card col-md-4">
-  <div class="card p-3 no-border">
-    <form method="POST" action="/post">
-      <textarea
-        name="content"
-        class="form-control text-area"
-        placeholder="Write something here..."
-      ></textarea>
-      <div class="vr"></div>
-      <div class="button-container">
-        <button class="btn btn-primary custom-button">Post</button>
-      </div>
-    </form>
+<div class="row">
+  <div class="main-card col-md-6 cont">
+    <div class="card p-3 no-border">
+        <form method="POST" action="/post">
+          <div class="row">
+              <div class="col-md-10 col-10">
+                <textarea
+                  name="content"
+                  class="form-control text-area"
+                  placeholder="Write something here..."
+                ></textarea>
+              </div>
+              <div class="col-md-2 col-2 button-container">
+                <button class="btn btn-primary custom-button">Post</button>
+              </div>
+          </div>
+        </form>
+    </div>
   </div>
 </div>
+
 <% data.forEach(post => { %>
-<div class="container post-card col-md-4">
-  <div class="card p-4 no-border">
-    <div style="display:inline-block">
-      <div class="right">
-        <small class="right"><%= post.date %></small><br /><small class="right"><%= post.time %></small>
+<div class="row">
+  <div class="post-card col-md-6 col-sm-12 col-xs-12 cont">
+    <div class="card p-4 no-border">
+      <div style="display:inline-block">
+        <div class="right">
+          <small class="right"><%= post.date %></small><br /><small class="right"><%= post.time %></small>
+        </div>
+        <h5><%= post.user[0].first_name.charAt(0).toUpperCase() + post.user[0].first_name.substr(1) + ' ' + post.user[0].last_name.charAt(0).toUpperCase() + post.user[0].last_name.substr(1) %></h5>
       </div>
-      <h5><%= post.user[0].first_name.charAt(0).toUpperCase() + post.user[0].first_name.substr(1) + ' ' + post.user[0].last_name.charAt(0).toUpperCase() + post.user[0].last_name.substr(1) %></h5>
+      <p class="content">
+        <%= post.content %>
+      </p>
     </div>
-    <p class="content">
-      <%= post.content %>
-    </p>
   </div>
 </div>
 <% }) %>
