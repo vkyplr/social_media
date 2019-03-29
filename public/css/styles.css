@@ -157,10 +157,66 @@ body {
   margin-top: 55px;
 }
 
-/* .msg-btn {
-  padding-left: 4px;
+.sender {
+  color: #d4e1f9;
+  margin-bottom: 0px;
 }
 
-.msg-text {
-  padding-right: 4px;
-} */
+.par {
+  position: relative;
+}
+
+.speech-bubble {
+  color: #ffffff;
+  max-width: 50%;
+  padding: 10px;
+  position: relative;
+  background: #00aaff;
+  border-radius: 0.4em;
+  border-top-left-radius: 0;
+  display: table;
+  margin-bottom: 25px;
+}
+
+.speech-bubble:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 9%;
+  width: 0;
+  height: 0;
+  border: 12px solid transparent;
+  border-right-color: #00aaff;
+  border-left: 0;
+  border-top: 0;
+  margin-top: -6px;
+  margin-left: -12px;
+}
+
+.my-speech-bubble {
+  margin-left: auto;
+  color: #ffffff;
+  max-width: 50%;
+  padding: 10px;
+  position: relative;
+  background: #00aabb;
+  border-radius: 0.4em;
+  border-top-right-radius: 0;
+  display: table;
+  margin-bottom: 25px;
+}
+
+.my-speech-bubble:after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 13%;
+  width: 0;
+  height: 0;
+  border: 12px solid transparent;
+  border-top-color: #00aabb;
+  border-left: 0;
+  border-bottom: 0;
+  margin-top: -6px;
+  margin-right: -12px;
+}

@@ -1,21 +1,27 @@
 <div class="row">
-  <div class="messages-container col-md-6 cont">
+  <div class="messages-container col-md-6 col-sm-8 col-xs-12 cont">
     <div class="card no-border p-2">
       <h3 class="center-text">Messages</h3>
       <div class="vr"></div>
-      <div class="message"></div>
+      <div class="message">
+        <div class="row">
+          <div class="col-md-6" id="friend-message"></div>
+          <div class="col-md-6" id="my-message"></div>
+        </div>
+      </div>
       <div class="message-form">
-        <form action="">
+        <form>
           <div class="row">
-            <div class="col-md-10 col-sm-10 col-8">
+            <div class="col-md-9 col-sm-9 col-8">
               <input
                 type="text"
                 id="msg"
                 class="form-control message-input"
                 placeholder="type your message"
+                required
               />
             </div>
-            <div class="col-md-2 col-sm-2 col-4">
+            <div class="col-md-3 col-sm-3 col-4">
               <button class="btn btn-primary message-send">send</button>
             </div>
           </div>
@@ -26,13 +32,44 @@
 </div>
 <div class="bottom-margin"></div>
 <script>
-  var socket = io.connect("http://localhost:4000");
-  $("form").submit(function() {
-    socket.emit("message", $("#msg").val());
+  function identify(_id) {
+    return "<%= locals.user._id %>" == _id ? "my-" : "";
+  }
+
+  var socket = io.connect(location.hostname + ":" + location.port);
+
+  $("form").on("submit", function() {
+    socket.emit("message", {
+      message: $("#msg").val(),
+      user: {
+        _id: "<%= locals.user._id %>",
+        userName: "<%= locals.user.first_name + ' ' + locals.user.last_name %>"
+      }
+    });
     $("#msg").val("");
     return false;
   });
+
+  // $("#msg").on("keydown", (e) => {
+  //   if (e.which == 13 || e.keyCode == 13) {
+  //     return false;
+  //   }
+  //   socket.emit("typing");
+  // })
+
   socket.on("message", function(msg) {
-    $(".message").append("<p  class='message-text'>" + msg + "</p>");
+    $(".message").append(
+      `<div class="par"><div  class='message-text ${identify(
+        msg.user._id
+      )}speech-bubble'>` +
+        `${
+          identify(msg.user._id) == "my-"
+            ? ""
+            : "<p class='sender'>" + msg.user.userName + "</p>"
+        }` +
+        msg.message +
+        `</div></div>`
+    );
+    $(".message").animate({ scrollTop: $(".message")[0].scrollHeight }, "slow");
   });
 </script>

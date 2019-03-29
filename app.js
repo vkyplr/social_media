@@ -3,7 +3,21 @@ const path = require("path");
 const session = require("express-session");
 const flash = require("express-flash-messages");
 const app = express();
+const server = require("http").createServer(app);
+const sessionMiddleware = session({
+  // cookie: { maxAge: 60000 },
+  maxAge: new Date(Date.now() + 3600000), //1 Hour
+  expires: new Date(Date.now() + 3600000), //1 Hour
+  path: "/",
+  secret: "woot",
+  resave: false,
+  saveUninitialized: false
+});
+
 bcrypt = require("bcrypt");
+
+server.listen(4000, () => console.log("listning on PORT 4000"));
+io = require("socket.io")(server);
 
 // DATABASE INITIALIZATIONS
 mongoose = require("mongoose");
@@ -17,21 +31,18 @@ mongoose.Promise = global.Promise;
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
+// Socket
+io.sockets.on("connection", function(socket) {
+  socket.on("message", function(msg) {
+    io.emit("message", msg);
+  });
+});
+
 // Routes
 const mainRoutes = require("./routes/main");
 const adminRoutes = require("./routes/admin");
 
-app.use(
-  session({
-    // cookie: { maxAge: 60000 },
-    maxAge: new Date(Date.now() + 3600000), //1 Hour
-    expires: new Date(Date.now() + 3600000), //1 Hour
-    path: "/",
-    secret: "woot",
-    resave: false,
-    saveUninitialized: false
-  })
-);
+app.use(sessionMiddleware);
 app.use(flash());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -54,13 +65,4 @@ app.use("/admin", adminRoutes);
 
 app.use((req, res) => {
   res.render("index", { page: "error" });
-});
-
-server = app.listen(4000, () => console.log("listning on PORT 4000"));
-var io = require("socket.io")(server);
-
-io.on("connection", function(socket) {
-  socket.on("message", function(msg) {
-    io.emit("message", msg);
-  });
 });
